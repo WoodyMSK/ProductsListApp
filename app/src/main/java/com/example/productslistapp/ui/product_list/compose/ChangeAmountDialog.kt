@@ -66,7 +66,10 @@ fun ChangeAmountDiaLog(
                             onDecClick()
                         }
                     ) {
-                        Icon(Icons.AutoMirrored.Sharp.KeyboardArrowLeft, contentDescription = "")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Sharp.KeyboardArrowLeft,
+                            contentDescription = stringResource(R.string.dec_amount),
+                        )
                     }
                     Text(
                         modifier = Modifier.size(24.dp),
@@ -77,7 +80,10 @@ fun ChangeAmountDiaLog(
                             onIncClick()
                         }
                     ) {
-                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "")
+                        Icon(
+                            Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = stringResource(R.string.inc_amount),
+                        )
                     }
                 }
                 Row(

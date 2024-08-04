@@ -1,6 +1,5 @@
 package com.example.productslistapp.data.db
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.productslistapp.domain.model.Product

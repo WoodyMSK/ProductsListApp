@@ -30,6 +30,7 @@ fun ProductListView(productViewModel: ProductListViewModel) {
                     onChangeAmount = productViewModel::onChangeAmount,
                 )
             }
+
             is LoadingState -> {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),

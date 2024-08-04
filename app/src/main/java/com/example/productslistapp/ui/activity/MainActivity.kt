@@ -22,5 +22,9 @@ class MainActivity : AppCompatActivity() {
             .beginTransaction()
             .add(binding.fragmentContainer.id, ProductListFragment())
             .commit()
+
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
     }
 }

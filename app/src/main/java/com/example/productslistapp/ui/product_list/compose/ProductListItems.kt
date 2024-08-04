@@ -82,7 +82,6 @@ fun ProductListItems(
             onDecClick = {
                 if (amount > 0) {
                     amount--
-                } else {
                 }
             }
         )
@@ -124,7 +123,7 @@ fun ProductListItems(
                         ) {
                             Icon(
                                 Icons.Default.Close,
-                                contentDescription = stringResource(R.string.empty_text),
+                                contentDescription = stringResource(R.string.remove_text),
                                 modifier = Modifier
                                     .padding(8.dp)
                                     .size(24.dp)
@@ -142,7 +141,7 @@ fun ProductListItems(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background),
             ) {
-                items(productList) { item ->
+                items(items = productList, key = { item -> item.id }) { item ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -163,10 +162,11 @@ fun ProductListItems(
                             ) {
                                 Text(
                                     text = item.name,
-                                    fontSize = 18.sp,
+                                    fontSize = 24.sp,
                                 )
                                 Row {
                                     IconButton(
+                                        modifier = Modifier.size(38.dp),
                                         onClick = {
                                             amount = item.amount
                                             itemId = item.id
@@ -176,10 +176,11 @@ fun ProductListItems(
                                         Icon(
                                             imageVector = Icons.Default.Create,
                                             tint = MaterialTheme.colorScheme.primary,
-                                            contentDescription = "",
+                                            contentDescription = stringResource(R.string.change_amount),
                                         )
                                     }
                                     IconButton(
+                                        modifier = Modifier.size(38.dp),
                                         onClick = {
                                             itemId = item.id
                                             openRemoveDialog = true
@@ -188,7 +189,7 @@ fun ProductListItems(
                                         Icon(
                                             imageVector = Icons.Default.Delete,
                                             tint = MaterialTheme.colorScheme.error,
-                                            contentDescription = "",
+                                            contentDescription = stringResource(R.string.remove_item),
                                         )
                                     }
                                 }
@@ -199,35 +200,28 @@ fun ProductListItems(
                                 item.tags.forEach { Tag(it) }
                             }
                             Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(),
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Column(
-                                    modifier = Modifier
-                                        .fillMaxWidth(0.5f)
-                                        .padding(top = 8.dp),
+                                    modifier = Modifier.fillMaxWidth(0.5f)
                                 ) {
                                     Text(
                                         text = stringResource(R.string.in_stock),
-                                        fontSize = 14.sp,
+                                        fontSize = 16.sp,
                                     )
                                     Text(
                                         text = item.amount.toString(),
-                                        fontSize = 14.sp,
+                                        fontSize = 16.sp,
                                     )
                                 }
-                                Column(
-                                    modifier = Modifier
-                                        .padding(top = 8.dp),
-                                ) {
+                                Column {
                                     Text(
                                         text = stringResource(R.string.add_date),
-                                        fontSize = 14.sp,
+                                        fontSize = 16.sp,
                                     )
                                     Text(
                                         text = parseAndFormatDate(item.time),
-                                        fontSize = 14.sp,
+                                        fontSize = 16.sp,
                                     )
                                 }
                             }
@@ -246,7 +240,7 @@ fun ProductListItems(
 @Composable
 fun Tag(tag: String) {
     AssistChip(
-        modifier = Modifier.padding(end = 4.dp),
+        modifier = Modifier.padding(end = 8.dp),
         onClick = { },
         label = { Text(tag) },
     )

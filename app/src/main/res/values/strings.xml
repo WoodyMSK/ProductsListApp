@@ -10,4 +10,9 @@
     <string name="add_date">"Дата добавления"</string>
     <string name="in_stock">"На складе"</string>
     <string name="empty_text">""</string>
+    <string name="remove_text">"Очистка строки поиска"</string>
+    <string name="change_amount">"Изменить количество товара"</string>
+    <string name="remove_item">"Удалить позицию"</string>
+    <string name="inc_amount">"Увеличить количество"</string>
+    <string name="dec_amount">"Уменьшить количество"</string>
 </resources>
