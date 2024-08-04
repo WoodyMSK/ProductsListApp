@@ -4,4 +4,10 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="remove_item_question">Удалить позицию?</string>
+    <string name="product_amount">Количество товара</string>
+    <string name="apply">Принять</string>
+    <string name="reject">Отмена</string>
+    <string name="add_date">"Дата добавления"</string>
+    <string name="in_stock">"На складе"</string>
+    <string name="empty_text">""</string>
 </resources>

@@ -10,6 +10,19 @@ class ProductListRepositoryImpl @Inject constructor(
     private val productDao: ProductDao,
 ) : ProductListRepository {
 
-    override suspend fun getProductList(): List<Product> =
-        mapProductsFromEntity(productDao.getProductList())
+    override suspend fun getProductList(): List<Product> {
+        val productList = productDao.getProductList()
+        return mapProductsFromEntity(productList)
+    }
+
+    override suspend fun removeItem(id: Int) = productDao.delete(id)
+    override suspend fun changeAmount(id: Int, amount: Int) = productDao.changeAmount(
+        id = id,
+        amount = amount,
+    )
+
+    override suspend fun findByNameContaining(substring: String): List<Product> {
+        val productList = productDao.findByNameContaining(substring)
+        return mapProductsFromEntity(productList)
+    }
 }

@@ -9,11 +9,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.productslistapp.domain.model.Product
 import com.example.productslistapp.ui.ProductListViewModel
 import com.example.productslistapp.ui.model.Events
-import com.example.productslistapp.ui.model.Events.ShowProductList
 import com.example.productslistapp.ui.model.Events.LoadingState
+import com.example.productslistapp.ui.model.Events.ShowProductList
 
 @Composable
 fun ProductListView(productViewModel: ProductListViewModel) {
@@ -26,8 +25,9 @@ fun ProductListView(productViewModel: ProductListViewModel) {
             is ShowProductList -> {
                 ProductListItems(
                     productList = event.products,
-                    onSearch = productViewModel::searchProduct,
+                    onSearch = productViewModel::findByNameContaining,
                     onDelete = productViewModel::onDeleteClick,
+                    onChangeAmount = productViewModel::onChangeAmount,
                 )
             }
             is LoadingState -> {

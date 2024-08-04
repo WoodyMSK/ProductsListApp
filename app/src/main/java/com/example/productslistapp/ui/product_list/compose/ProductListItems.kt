@@ -1,69 +1,45 @@
 package com.example.productslistapp.ui.product_list.compose
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.isTraversalGroup
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.traversalIndex
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.productslistapp.R
 import com.example.productslistapp.domain.model.Product
+import com.example.productslistapp.domain.parseAndFormatDate
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -71,19 +47,44 @@ fun ProductListItems(
     productList: List<Product>,
     onSearch: (text: String) -> Unit,
     onDelete: (id: Int) -> Unit,
+    onChangeAmount: (id: Int, amount: Int) -> Unit,
 ) {
 
     val searchText = remember { mutableStateOf("") }
-    var openDialog by remember { mutableStateOf(false) }
+    var openRemoveDialog by remember { mutableStateOf(false) }
+    var openChangeAmountDialog by remember { mutableStateOf(false) }
     var itemId by remember { mutableIntStateOf(0) }
+    var amount by remember { mutableIntStateOf(0) }
 
-    if (openDialog) {
+    if (openRemoveDialog) {
         RemoveItemDialog(
             onYesClick = {
                 onDelete(itemId)
-                openDialog = false
+                openRemoveDialog = false
             },
-            onNoClick = { openDialog = false }
+            onNoClick = { openRemoveDialog = false }
+        )
+    }
+
+    if (openChangeAmountDialog) {
+        ChangeAmountDiaLog(
+            amount = amount,
+            onYesClick = {
+                onChangeAmount(itemId, amount)
+                openChangeAmountDialog = false
+            },
+            onNoClick = {
+                openChangeAmountDialog = false
+            },
+            onIncClick = {
+                amount++
+            },
+            onDecClick = {
+                if (amount > 0) {
+                    amount--
+                } else {
+                }
+            }
         )
     }
 
@@ -92,7 +93,11 @@ fun ProductListItems(
         shape = RoundedCornerShape(0.dp),
     ) {
 
-        Column(Modifier.fillMaxWidth()) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.background)
+        ) {
             SearchBar(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -119,7 +124,7 @@ fun ProductListItems(
                         ) {
                             Icon(
                                 Icons.Default.Close,
-                                contentDescription = "",
+                                contentDescription = stringResource(R.string.empty_text),
                                 modifier = Modifier
                                     .padding(8.dp)
                                     .size(24.dp)
@@ -135,7 +140,7 @@ fun ProductListItems(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
-//                .background(MaterialTheme.colorScheme.background),
+                    .background(MaterialTheme.colorScheme.background),
             ) {
                 items(productList) { item ->
                     Card(
@@ -162,7 +167,11 @@ fun ProductListItems(
                                 )
                                 Row {
                                     IconButton(
-                                        onClick = { }
+                                        onClick = {
+                                            amount = item.amount
+                                            itemId = item.id
+                                            openChangeAmountDialog = true
+                                        }
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Create,
@@ -173,7 +182,7 @@ fun ProductListItems(
                                     IconButton(
                                         onClick = {
                                             itemId = item.id
-                                            openDialog = true
+                                            openRemoveDialog = true
                                         }
                                     ) {
                                         Icon(
@@ -200,11 +209,10 @@ fun ProductListItems(
                                         .padding(top = 8.dp),
                                 ) {
                                     Text(
-                                        text = "На складе",
+                                        text = stringResource(R.string.in_stock),
                                         fontSize = 14.sp,
                                     )
                                     Text(
-                                        modifier = Modifier.padding(top = 8.dp),
                                         text = item.amount.toString(),
                                         fontSize = 14.sp,
                                     )
@@ -214,12 +222,11 @@ fun ProductListItems(
                                         .padding(top = 8.dp),
                                 ) {
                                     Text(
-                                        text = "Дата добавления",
+                                        text = stringResource(R.string.add_date),
                                         fontSize = 14.sp,
                                     )
                                     Text(
-                                        modifier = Modifier.padding(top = 8.dp),
-                                        text = item.time,
+                                        text = parseAndFormatDate(item.time),
                                         fontSize = 14.sp,
                                     )
                                 }

@@ -10,4 +10,13 @@ class ProductListInteractor @Inject constructor(
 
     suspend fun getProductList(): List<Product> =
         productListRepository.getProductList()
+
+    suspend fun removeItem(id: Int) =
+        productListRepository.removeItem(id)
+
+    suspend fun changeAmount(id: Int, amount: Int) =
+        productListRepository.changeAmount(id, amount)
+
+    suspend fun findByNameContaining(substring: String): List<Product> =
+        productListRepository.findByNameContaining(substring)
 }
