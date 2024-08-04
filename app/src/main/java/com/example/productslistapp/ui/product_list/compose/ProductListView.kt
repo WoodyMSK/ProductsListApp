@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.productslistapp.domain.model.Product
 import com.example.productslistapp.ui.ProductListViewModel
 import com.example.productslistapp.ui.model.Events
 import com.example.productslistapp.ui.model.Events.ShowProductList
@@ -23,7 +24,11 @@ fun ProductListView(productViewModel: ProductListViewModel) {
 
         when (val event = state) {
             is ShowProductList -> {
-                ProductListItems(event.products)
+                ProductListItems(
+                    productList = event.products,
+                    onSearch = productViewModel::searchProduct,
+                    onDelete = productViewModel::onDeleteClick,
+                )
             }
             is LoadingState -> {
                 CircularProgressIndicator(
@@ -34,4 +39,3 @@ fun ProductListView(productViewModel: ProductListViewModel) {
         }
     }
 }
-

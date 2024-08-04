@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ProductsListApp</string>
+    <string name="product_search">Поиск товаров</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="remove_item_question">Удалить позицию?</string>
 </resources>

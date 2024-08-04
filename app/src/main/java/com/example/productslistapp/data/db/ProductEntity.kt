@@ -1,12 +1,13 @@
 package com.example.productslistapp.data.db
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.productslistapp.domain.model.Product
 
 @Entity(tableName = "product_list")
 data class ProductEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
     val time: String,
